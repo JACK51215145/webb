@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>蕭子翔的自我介紹</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    #container {
+      position: relative;
+      z-index: 1;
+      padding: 60px;
+      max-width: 700px;
+      margin: 60px auto;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid #00ffe7;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00ffe7aa, 0 0 40px #00ffe733;
+      backdrop-filter: blur(12px);
+      color: #00ffe7;
+      animation: fadeIn 2s ease;
+    }
+
+    h1#title {
+      font-size: 2.5em;
+      text-align: center;
+      text-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7aa;
+    }
+
+    p#desc {
+      font-size: 1.3em;
+      text-align: center;
+      margin-bottom: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #00ffe7;
+      width: fit-content;
+      margin: 0 auto 30px;
+    }
+
+    #infoBox p {
+      font-size: 1.1em;
+      margin: 10px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease-out;
+    }
+
+    #infoBox p.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* 自我介紹卡片區塊 */
+    #profileSection {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    .section-card {
+      background: rgba(0, 255, 231, 0.05);
+      border: 1px solid #00ffe7aa;
+      border-radius: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 5px #00ffe744;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 0 15px #00ffe7;
+      transform: scale(1.02);
+    }
+
+    .section-card h3 {
+      margin: 0;
+      font-size: 1.3em;
+      color: #00ffe7;
+    }
+
+    .section-card p {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #ccfffa;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <div id="container">
+    <h1 id="title"></h1>
+    <p id="desc"></p>
+    <div id="infoBox"></div>
+    <div id="profileSection"></div>
+  </div>
+
+  <script>
+    // 打字動畫區
+    const titleText = "大家好我是蕭子翔";
+    const descText = "我今年剛滿18歲";
+    const info = [
+      "🏫 曾經就讀樟湖生態國中",
+      "🔵 曾做過專題名字是藍染研究",
+      "🚴 曾比過自行車比賽",
+      "🀄️ 也會跟我們班同學打麻將 ",
+    ];
+
+    document.getElementById("title").textContent = titleText;
+    setTimeout(() => {
+      let i = 0;
+      const desc = document.getElementById("desc");
+      desc.textContent = "";
+      const typeInterval = setInterval(() => {
+        desc.textContent += descText[i];
+        i++;
+        if (i >= descText.length) clearInterval(typeInterval);
+      }, 50);
+    }, 1000);
+
+    const infoBox = document.getElementById("infoBox");
+    info.forEach((text, index) => {
+      setTimeout(() => {
+        const p = document.createElement("p");
+        p.textContent = text;
+        infoBox.appendChild(p);
+        requestAnimationFrame(() => {
+          p.classList.add("show");
+        });
+      }, 2000 + index * 600);
+    });
+
+    // 自我介紹卡片內容
+    const profileSections = [
+      {
+        title: "我是誰？",
+        content: "大家好，我是蕭子翔，剛滿 18 歲，是個喜歡嘗試各種事務的人。",
+      },
+      {
+        title: "我喜歡什麼？",
+        content: "超愛玩 GTA 特別是解任務、搶劫和射爆敵人；也很喜歡籃球、羽球這種能飆汗的運動。",
+      },
+      {
+        title: "旅遊與美食",
+        content: "旅遊是靈魂充電，美食是人生意義，我覺得旅行就是到世界各地看看走走。",
+      },
+      {
+        title: "我會什麼技能？",
+        content: "我會維修自行車和組裝自行車。",
+      },
+      {
+        title: "我在幹嘛？",
+        content: "我目前正在就讀虎尾科技大學資訊工程五專部",
+      }
+    ];
+
+    const sectionBox = document.getElementById("profileSection");
+    profileSections.forEach((section) => {
+      const box = document.createElement("div");
+      box.className = "section-card";
+      box.innerHTML = `<h3>${section.title}</h3><p class="hidden">${section.content}</p>`;
+      box.addEventListener("click", () => {
+        const p = box.querySelector("p");
+        p.classList.toggle("hidden");
+      });
+      sectionBox.appendChild(box);
+    });
+
+    // 星星動畫區
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = Array.from({ length: 120 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.5,
+      xs: -2 + Math.random() * 4,
+      ys: Math.random() * 1 + 0.5,
+      opacity: Math.random()
+    }));
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.globalAlpha = star.opacity;
+        ctx.fillStyle = "#00ffe7";
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function moveStars() {
+      stars.forEach(star => {
+        star.x += star.xs;
+        star.y += star.ys;
+        star.opacity = 0.5 + Math.sin(Date.now() / 300 + star.x) * 0.5;
+
+        if (star.x < 0 || star.x > canvas.width || star.y > canvas.height) {
+          star.x = Math.random() * canvas.width;
+          star.y = -10;
+        }
+      });
+    }
+
+    function animate() {
+      drawStars();
+      moveStars();
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
